@@ -30,6 +30,10 @@ class MainActivity : FlutterActivity() {
             if (call.method == "getBatteryLevel") {
                 val batteryLevel = getBatteryLevel()
 
+                accessCalculatorFromFlutter(dartChannel, "sum", listOf<Int>(2, 4) as Object)
+                accessCalculatorFromFlutter(dartChannel, "div", listOf<Int>(4, 2) as Object)
+                accessCalculatorFromFlutter(dartChannel, "sub", listOf<Int>(4, 2) as Object)
+
                 if (batteryLevel != -1) {
 
                     result.success(batteryLevel)
@@ -41,26 +45,28 @@ class MainActivity : FlutterActivity() {
                 result.notImplemented()
             }
         }
+    }
 
+    private fun accessCalculatorFromFlutter(dartChannel: MethodChannel, method: String, args: Object) {
         Handler(Looper.getMainLooper()).post {
-            dartChannel.invokeMethod("sum", "", object : MethodChannel.Result {
+            dartChannel.invokeMethod(method, args, object : MethodChannel.Result {
                 override fun notImplemented() {
                     Log.e("method", "notImplemented")
                 }
 
                 override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
                     Log.e("method", "error")
+                    Log.e("method", errorMessage)
+                    Log.e("method", errorDetails.toString())
                 }
 
                 override fun success(result: Any?) {
-                    Log.e("method", "success")
+                    Log.e("method", method + " success with result:" + result.toString())
 
                 }
 
             })
         }
-
-
     }
 
     private fun getBatteryLevel(): Int {

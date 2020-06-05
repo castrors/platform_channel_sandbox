@@ -1,4 +1,6 @@
 class Calculator {
+  int sum(List<int> values) =>
+      values.reduce((value, element) => value + element);
 
-  int sum() =>  2;
+  int div(List<int> values) => values.reduce((value, element) => value ~/ element);
 }

@@ -12,11 +12,12 @@ void main() {
 Future<dynamic> calcHandler(MethodCall methodCall) async {
   switch (methodCall.method) {
     case 'sum':
-      return Calculator().sum();
-    case 'sub':
-      return -5;
+      print(methodCall.arguments);
+      return Calculator().sum(methodCall.arguments.cast<int>());
+    case 'div':
+      return Calculator().div(methodCall.arguments.cast<int>());
     default:
-      return 0;
+      throw UnimplementedError();
   }
 }
 
